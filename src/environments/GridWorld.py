@@ -1,8 +1,9 @@
 import numpy as np
 from numpy.core.fromnumeric import shape
 from numpy.random import randint
+from .environment_base import EnvironmentBase
 
-class GridWorld():
+class GridWorld(EnvironmentBase):
     def __init__(self, wraparound = True , randstart = True) -> None:
         ''' Intialize the windy grid world enviroment 
         hardcoded dimension of 500 rows by 100 col

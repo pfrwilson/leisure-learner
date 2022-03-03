@@ -1,6 +1,6 @@
 import numpy as np
 import  matplotlib.pyplot as plt
-from play_freetime import *
+from src.algorithms.play_freetime import play_freetime
 
 eps = 0.05
 alpha = 0.01

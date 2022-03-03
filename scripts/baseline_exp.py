@@ -1,6 +1,6 @@
 import numpy as np
 import  matplotlib.pyplot as plt
-from play_baseline import *
+from src.algorithms.play_baseline import play_baseline
 import os
 
 
