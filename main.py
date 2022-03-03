@@ -1,3 +1,5 @@
 
 
-print('hello world')
+from scripts import baseline_exp, freetime_exp
+
+freetime_exp.main()

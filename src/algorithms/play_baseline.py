@@ -1,10 +1,10 @@
-from GridWorld import *
+from ..environments.environment_base import EnvironmentBase
 import numpy as np
-from eGreedy import eGreedy
-from Qlearn import Qlearn
+from .eGreedy import eGreedy
+from .Qlearn import Qlearn
 
 
-def play_baseline(steps, wraparound, randstart, Q, alpha, eps):
+def play_baseline(env: EnvironmentBase, steps, Q, alpha, eps):
 
     X = 0
     Y = 1
@@ -17,18 +17,16 @@ def play_baseline(steps, wraparound, randstart, Q, alpha, eps):
     episode_steps = np.zeros(int(steps//10))
     episode_rewards = np.zeros(int(steps//10))
 
-    grid_world = GridWorld(wraparound,randstart)
-
     i=0
     while i<steps:
-        s1 = grid_world.get_state()
+        s1 = env.get_state()
         action = eGreedy(Q, s1, eps)
-        rew = grid_world.take_action(action)
-        s2 = grid_world.get_state()
+        rew = env.take_action(action)
+        s2 = env.get_state()
 
 
 
-        disct = grid_world.get_disct()
+        disct = env.get_disct()
         Q, delta, qdrop, ratio = Qlearn(Q,s1,action,rew,disct,s2,alpha)
         epirew += rew
         episteps += 1
@@ -44,7 +42,7 @@ def play_baseline(steps, wraparound, randstart, Q, alpha, eps):
 
             epirew = 0
             episteps = 0
-            grid_world.reset()
+            env.reset()
 
         score[i] = rew
         

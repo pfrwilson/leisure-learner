@@ -1,6 +1,7 @@
 import numpy as np
-import  matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from src.algorithms.play_freetime import play_freetime
+from src.environments.GridWorld import GridWorld
 
 eps = 0.05
 alpha = 0.01
@@ -12,13 +13,17 @@ discount = 0.98
 dim = (20,10,1,3)
 
 Q1 = np.ones(dim)
-score_opt, Q1, F1 = play_freetime(steps, wraparound, randstart, Q1, alpha, eps, discount, alpha)
+env = GridWorld(wraparound, randstart)
+score_opt, Q1, F1 = play_freetime(env, steps, Q1, alpha, eps, discount, alpha)
 
 Q2 = np.random.rand(20,10,1,3)
-score_rand, Q2, F2 = play_freetime(steps, wraparound, randstart, Q2, alpha, eps, discount, alpha)
+env = GridWorld(wraparound, randstart)
+score_rand, Q2, F2 = play_freetime(env, steps, Q2, alpha, eps, discount, alpha)
 
 Q3 = np.zeros(dim)
-score_pess, Q3, F3 = play_freetime(steps, wraparound, randstart, Q3, alpha, eps, discount, alpha)
+env = GridWorld(wraparound, randstart)
+score_pess, Q3, F3 = play_freetime(env, steps, Q3, alpha, eps, discount, alpha)
+
 
 plt.plot(score_opt, label= "Optimistic Init" )
 plt.plot(score_rand, label= "Random Init" )
