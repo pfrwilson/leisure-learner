@@ -17,18 +17,18 @@ def play_baseline(steps, wraparound, randstart, Q, alpha, eps):
     episode_steps = np.zeros(int(steps//10))
     episode_rewards = np.zeros(int(steps//10))
 
-    grid_wrold = GridWorld(wraparound,randstart)
+    grid_world = GridWorld(wraparound,randstart)
 
     i=0
     while i<steps:
-        s1 = grid_wrold.get_state()
+        s1 = grid_world.get_state()
         action = eGreedy(Q, s1, eps)
-        rew = grid_wrold.take_action(action)
-        s2 = grid_wrold.get_state()
+        rew = grid_world.take_action(action)
+        s2 = grid_world.get_state()
 
 
 
-        disct = grid_wrold.get_disct()
+        disct = grid_world.get_disct()
         Q, delta, qdrop, ratio = Qlearn(Q,s1,action,rew,disct,s2,alpha)
         epirew += rew
         episteps += 1
@@ -44,7 +44,7 @@ def play_baseline(steps, wraparound, randstart, Q, alpha, eps):
 
             epirew = 0
             episteps = 0
-            grid_wrold.reset()
+            grid_world.reset()
 
         score[i] = rew
         
