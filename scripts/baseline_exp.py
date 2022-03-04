@@ -4,7 +4,8 @@ from src.algorithms.play_baseline import play_baseline
 from src.environments.GridWorld import GridWorld
 import os
 
-def main():
+
+def main(config):
 
     eps = 0.05
     alpha = 0.01
@@ -12,7 +13,7 @@ def main():
     randstart = True
     steps = 100000
 
-    dim = (20,10,1,3)
+    dim = (20,10,3)
 
     Q1 = np.ones(dim)
     env = GridWorld(wraparound, randstart)
