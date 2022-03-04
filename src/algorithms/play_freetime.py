@@ -1,7 +1,7 @@
 from ..environments.environment_base import EnvironmentBase
 import numpy as np
 from .eGreedy import eGreedy
-from .Qlearn import Qlearn
+from .gridworld_q_learning import q_learn
 
 
 def play_freetime(env: EnvironmentBase, steps, Q, alpha, eps, discount, alpha2):
@@ -41,11 +41,11 @@ def play_freetime(env: EnvironmentBase, steps, Q, alpha, eps, discount, alpha2):
         disct = env.get_disct()
 
         # Learn Q
-        Q, delta, qdrop, ratio = Qlearn(Q,s1,action,rew,disct,s2,alpha)
+        Q, delta, qdrop, ratio = q_learn(Q,s1,action,rew,disct,s2,alpha)
         # Learn F 
         Frew = int(ratio < 1)
         Fdisct = int(Frew)
-        F = Qlearn(F, s1, action, Frew, Fdisct, s2, alpha2)[0]
+        F = q_learn(F, s1, action, Frew, Fdisct, s2, alpha2)[0]
         epirew = epirew + rew
         epifree = epifree + Frew
         episteps = episteps + 1

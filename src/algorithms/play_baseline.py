@@ -1,7 +1,7 @@
 from ..environments.environment_base import EnvironmentBase
 import numpy as np
 from .eGreedy import eGreedy
-from .Qlearn import Qlearn
+from .gridworld_q_learning import q_learn
 
 
 def play_baseline(env: EnvironmentBase, steps, Q, alpha, eps):
@@ -27,7 +27,7 @@ def play_baseline(env: EnvironmentBase, steps, Q, alpha, eps):
 
 
         disct = env.get_disct()
-        Q, delta, qdrop, ratio = Qlearn(Q,s1,action,rew,disct,s2,alpha)
+        Q, delta, qdrop, ratio = q_learn(Q,s1,action,rew,disct,s2,alpha)
         epirew += rew
         episteps += 1
         if disct == 0:
