@@ -9,6 +9,11 @@ from matplotlib import pyplot as plt
 from matplotlib.pyplot import imshow, close
 from matplotlib.patches import Rectangle, Circle
 
+from time import sleep
+
+import pygame
+from pygame import gfxdraw
+
 ObsType = TypeVar("ObsType")
 
 class GridWorld(Env):
@@ -34,17 +39,19 @@ class GridWorld(Env):
         self.__pos = None
         self.__init_pos()
         self.__done = False
+        self.fig = None 
+        self.axis = None
         
     def __init_pos(self):
         start_x = self.height - 1
-        start_y = self.width // 2 if self.randstart else np.random.randint(0, self.width)
+        start_y = self.width // 2 if not self.randstart else np.random.randint(0, self.width)
         self.__pos = self.xy_to_obs(start_x, start_y)
         
     def obs_to_xy(self, idx):
-        return idx // self.height, idx % self.height
+        return idx % self.height, idx // self.height
     
     def xy_to_obs(self, x, y):
-        return x * self.height + y 
+        return x + self.height * y 
     
     def step(self, action: int) -> Tuple[ObsType, float, bool, dict]:
         
@@ -79,29 +86,41 @@ class GridWorld(Env):
         reward = self.__reward_array[next_x, next_y]
         self.__pos = self.xy_to_obs(next_x, next_y)
         return self.__pos, reward, False, {'xy': (current_x, current_y)}
+            
                 
     def render(self, background=None):
+        
+        plt.ion()
         
         if background is not None:
             canvas = background
         else: 
             canvas = np.zeros((self.height, self.width)) 
-            
-        fig, axis = plt.subplots(1, 1)
-        axis.set_axis_off()
-        axis.imshow(canvas)
+        
+        if self.fig is None:
+            self.fig, self.axis = plt.subplots(1, 1)
+        
+        self.axis.set_axis_off()
+        self.axis.imshow(canvas)
 
         reward_colormap = get_cmap('plasma')
         
         for value, x, y in self.rewards:
             reward = Rectangle((y-np.sqrt(2)/4, x-np.sqrt(2)/4), np.sqrt(2)/2, np.sqrt(2)/2, color=reward_colormap(value))
-            axis.add_patch(reward)
+            self.axis.add_patch(reward)
     
         current_x, current_y = self.obs_to_xy(self.__pos)
         color = 'green' if self.__reward_array[current_x, current_y] != 0 else 'blue'
-        axis.add_patch(Circle((current_y, current_x), .5, color=color))
-
+        self.axis.add_patch(Circle((current_y, current_x), .5, color=color))
+        
+        plt.show(block=False)
+        plt.waitforbuttonpress()
+        
     def reset(self):
         
         self.__done = False
-        self.__init_pos        
+        self.__init_pos()        
+        return self.__pos
+    
+    
+    
