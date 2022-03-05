@@ -1,3 +1,6 @@
+
+raise DeprecationWarning
+
 import numpy as np
 from numpy.core.fromnumeric import shape
 from numpy.random import randint
@@ -107,7 +110,7 @@ class GridWorld(EnvironmentBase):
     
     def get_state(self):
         
-        return [self.agent_location[0],self.agent_location[1]]
+        return [self.agent_location[0], self.agent_location[1]]
 
     def get_prev_state(self):
         return self.prev_location

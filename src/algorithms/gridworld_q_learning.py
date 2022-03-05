@@ -1,7 +1,11 @@
 
+
+raise DeprecationWarning()
+
 from typing import List
 import numpy as np
-
+from gym import Env
+from tqdm import tqdm
 
 def initialize_q_table(initialization: str, shape, seed=0):
     
@@ -15,17 +19,28 @@ def initialize_q_table(initialization: str, shape, seed=0):
     else: raise ValueError(f'intitialization {initialization} not supported')
 
 
-def q_learn(Q,s1,action,rew,disct,s2,alpha):
+def q_learn_step(Q, s, a, r, gamma, next_s, alpha):
+    
+    target = r + gamma * Q[next_s, :].max()
 
-    target = rew + disct * Q[s2[0],s2[1],:].max()
-
-    delta = Q[s1[0],s1[1],action] - target
-    qdrop = Q[s1[0],s1[1],action] - disct*Q[s2[0],s2[1],:].max()
-    ratio = Q[s1[0],s1[1],:].max() / (disct*Q[s2[0],s2[1],:].max() + 0.00001)
+    delta = Q[s, a] - target
+    qdrop = Q[s1[0], s1[1], action] - disct * Q[s2[0], s2[1], :].max()
+    ratio = Q[s1[0], s1[1], :].max() / ( disct* Q[s2[0],s2[1],:].max() + 0.00001)
+    
     if rew == 1:
         ratio = 0
 
-
-    Q[s1[0],s1[1],action] = Q[s1[0],s1[1],action] - alpha*delta
+    Q[s, a] = Q[s, a] - alpha*delta
 
     return Q, delta, qdrop, ratio
+
+
+def q_learn(Q, env: Env, gamma, alpha, n_steps):
+    
+    s = env.reset()
+    
+    with tqdm(range(n_steps), desc='Step #') as pbar:
+        for step in pbar:
+            
+            
+    
