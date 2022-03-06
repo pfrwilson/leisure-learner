@@ -16,21 +16,14 @@ class Agent(ABC):
         
     def reset(self):
         self.observation = self.env.reset()
-        self.done = False
-    
-    def play(self, action):
-        if self.done: 
-            raise ValueError('In terminal state')
-        obs, value, done, info = self.env.step(action)
-        self.observation = obs
-        self.done = done
-        return obs, value, done, info
 
     def learn_episode(self, step_limit: int = 1e6):
         step = 0
-        while step < step_limit and not self.done:
-            self.learn_step()                                      
+        while step < step_limit: 
+            done = self.learn_step()                                      
             self.global_step +=1
+            if done: break
+            
         self.current_episode += 1
         self.reset()
             
