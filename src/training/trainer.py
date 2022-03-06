@@ -7,14 +7,12 @@ from ..logging.logger_base import Logger
 
 class Trainer:
 
-    def __init__(self, max_steps=None):
-        self.max_steps = max_steps
+    def __init__(self, max_episodes=None):
+        self.max_episodes = int(max_episodes)
 
     def train(self, agent: Agent):
     
-        pbar = tqdm()
-        pbar.set_description
-        
-        while agent.global_step <= self.max_steps:
+        pbar = tqdm(range(self.max_episodes), desc='EPISODE')
+        for episode in pbar:
             agent.learn_episode()
-            pbar.update()
+            
