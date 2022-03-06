@@ -1,0 +1,9 @@
+agent:
+  name: 
+    q_learning
+  config:
+    q_initialization: random
+    seed: 1
+    epsilon: 0.1
+    gamma: .98
+    alpha: 0.01

@@ -1,15 +1,9 @@
 
-version: baseline
-
-agent:
-  q_initialization: random
-  seed: 1
-  epsilon: 0.05
-  gamma: .98
-  alpha: 0.01
+defaults:
+  - agent: vanilla
 
 training:
-  n_steps: 1e7
+  max_episodes: 20000
 
 environment:
   name: gridworld
@@ -18,8 +12,7 @@ environment:
     width: 10
     rewards:    # amount, x, y
       - [1, 0, 5]
-      - [1, 10, 1]
+      - [1, 2, 3]
     randstart: true
 
-logging:
-
+report:
