@@ -15,12 +15,11 @@ def main(config):
     from src.logging.simple_logger import ListLogger
     logger = ListLogger()
     
-    # TODO factory method here instead of constructor
-    from src.agents.q_learn import QLearningAgent
-    agent = QLearningAgent(env, QLearningConfig(**config.agent), logger)
+    from src.agents import build_agent
+    agent = build_agent(config.agent.name, env, logger, config.agent.config)
 
     from src.training.trainer import Trainer
-    trainer = Trainer(max_steps=config.training.n_steps)
+    trainer = Trainer(**config.training)
     trainer.train(agent)
 
     create_report(agent, env, logger)
@@ -41,6 +40,15 @@ def create_report(agent, env, logger):
     plt.colorbar()
     plt.show()
 
+    if hasattr(agent, 'F'):
+        F = agent.F
+        max_F = np.max(F, axis=1)
+        max_F = rearrange(max_F, '( w h) -> h w', h=env.height, w=env.width)
+        plt.figure()
+        plt.imshow(max_F)
+        plt.colorbar()
+        plt.title('f table')
+        plt.show()
 
 if __name__ == '__main__':
     main()
