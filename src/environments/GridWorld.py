@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 
 class GridWorld(EnvironmentBase):
-    def __init__(self, wraparound = True, randstart = True) -> None:
+    def __init__(self, world_dim, rewards, randstart = True) -> None:
         ''' Intialize the windy grid world enviroment 
         hardcoded dimension of 500 rows by 100 col
         hardcoded reward location
@@ -18,18 +18,24 @@ class GridWorld(EnvironmentBase):
         @param randstart: Booelean var, indicates whether start point is random col of bottom row 
             or middle of bottom row
         '''
-        self.rows = 20
-        self.col = 10
+        self.rows = world_dim[0]
+        self.col = world_dim[1]
         # Reward location matrix, first col of each row indicates if reward is taken or not
         # 2nd and 3rd column indicate postion of reward
-        self.rewards_loc = np.array([[1,0,self.col//2]])
+        #self.rewards_loc = np.array([[1,0,self.col//2]])
+
+        self.rewards_loc = np.array(rewards)
+
         # rewards_loc formatted as matrix 
-        # [[amount,loc_x,loc_y],
-        # [amount,loc_x,loc_y]]
+        # [(amount,loc_x,loc_y),
+        # (amount,loc_x,loc_y)]
 
         # Remaining rewards
-        self.rewards = np.sum(self.rewards_loc[:,0])              
-        self.wrap = wraparound
+        self.rewards = len(self.rewards_loc)
+        
+        # wraparound needs to be removed fully           
+        self.wrap = False
+        
         self.rand = randstart
         self.discount = 0.98
         if self.rand:

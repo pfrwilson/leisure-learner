@@ -2,4 +2,4 @@
 
 from scripts import baseline_exp, freetime_exp
 
-freetime_exp.main()
+freetime_exp

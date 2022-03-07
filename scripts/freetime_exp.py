@@ -13,15 +13,17 @@ discount = 0.98
 dim = (20,10,1,3)
 
 Q1 = np.ones(dim)
-env = GridWorld(wraparound, randstart)
+world_dim = [20,10]
+rewards = [[1,0,0],[1,0,9]]
+env = GridWorld(world_dim, rewards, randstart = True)
 score_opt, Q1, F1 = play_freetime(env, steps, Q1, alpha, eps, discount, alpha)
 
 Q2 = np.random.rand(20,10,1,3)
-env = GridWorld(wraparound, randstart)
+env = GridWorld( world_dim, rewards, randstart = True)
 score_rand, Q2, F2 = play_freetime(env, steps, Q2, alpha, eps, discount, alpha)
 
 Q3 = np.zeros(dim)
-env = GridWorld(wraparound, randstart)
+env = GridWorld( world_dim, rewards, randstart = True)
 score_pess, Q3, F3 = play_freetime(env, steps, Q3, alpha, eps, discount, alpha)
 
 

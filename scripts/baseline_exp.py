@@ -15,7 +15,9 @@ def main():
     dim = (20,10,1,3)
 
     Q1 = np.ones(dim)
-    env = GridWorld(wraparound, randstart)
+    world_dim = [20,10]
+    rewards = [[1,0,7],[1,5,4]]
+    env = GridWorld( world_dim, rewards, randstart = True)
     score_opt, Q1 = play_baseline(env, steps, Q1, alpha, eps)
 
     Q2 = np.random.rand(20,10,1,3)

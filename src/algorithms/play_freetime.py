@@ -22,11 +22,6 @@ def play_freetime(env: EnvironmentBase, steps, Q, alpha, eps, discount, alpha2):
     while i<steps:
         s1 = env.get_state()
 
-        if s1 in [[1,5],[1,6],[1,4]]:
-            c = 2
-
-        if s1[0] == 1:
-            debug=True
 
         # Check if an action has free time
         state_actions = F[s1[0],s1[1],0,:]

@@ -9,10 +9,7 @@ def Qlearn(Q,s1,action,rew,disct,s2,alpha):
     if rew == 1:
         ratio = 0
 
-    # Q learn update
-    if Q[s1[0],s1[1],0,action] - alpha*delta > 1:
-        c=1
-        pass
+
     Q[s1[0],s1[1],0,action] = Q[s1[0],s1[1],0,action] - alpha*delta
 
     return Q, delta, qdrop, ratio
