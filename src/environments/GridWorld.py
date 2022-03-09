@@ -71,8 +71,7 @@ class GridWorld(EnvironmentBase):
                 if self.agent_location[0] == self.rewards_loc[i,1] and self.agent_location[1] == self.rewards_loc[i,2]:
                     # Assign reward to the agent
                     action_rew = 1
-                    # Remove reward from the gridworld
-                    self.rewards_loc[i,0] = 0
+
                     # Reduce total rewards by 1
                     self.rewards -= 1
                     
@@ -101,7 +100,7 @@ class GridWorld(EnvironmentBase):
 
     def reset(self):
 
-        self.rewards_loc = np.array([[1,0,self.col//2]])
+        #self.rewards_loc = np.array([[1,0,self.col//2]])
         self.rewards = np.sum(self.rewards_loc[:,0])
 
         self.discount = 0.98
