@@ -14,16 +14,20 @@ dim = (20,10,1,3)
 
 Q1 = np.ones(dim)
 world_dim = [20,10]
-rewards = [[1,0,0],[1,0,9]]
+rewards = [[1,0,7],[1,4,5]]
 env = GridWorld(world_dim, rewards, randstart = True)
 score_opt, Q1, F1 = play_freetime(env, steps, Q1, alpha, eps, discount, alpha)
 
 Q2 = np.random.rand(20,10,1,3)
-env = GridWorld( world_dim, rewards, randstart = True)
+world_dim = [20,10]
+rewards = [[1,0,7],[1,4,5]]
+env = GridWorld(world_dim, rewards, randstart = True)
 score_rand, Q2, F2 = play_freetime(env, steps, Q2, alpha, eps, discount, alpha)
 
 Q3 = np.zeros(dim)
-env = GridWorld( world_dim, rewards, randstart = True)
+world_dim = [20,10]
+rewards = [[1,0,7],[1,4,5]]
+env = GridWorld(world_dim, rewards, randstart = True)
 score_pess, Q3, F3 = play_freetime(env, steps, Q3, alpha, eps, discount, alpha)
 
 
@@ -37,21 +41,21 @@ plt.show()
 
 max_opt_val = np.max(Q1,axis=3)
 print(max_opt_val[:,:,0].shape)
-plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 1, vmin= 0)
+plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 2, vmin= 0)
 plt.title("Freetime Opt Q")
 plt.colorbar()
 plt.show()
 
 max_opt_val = np.max(Q2,axis=3)
 print(max_opt_val[:,:,0].shape)
-plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 1, vmin= 0)
+plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 2, vmin= 0)
 plt.title("Freetime Rand Q")
 plt.colorbar()
 plt.show()
 
 max_opt_val = np.max(Q3,axis=3)
 print(max_opt_val[:,:,0].shape)
-plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 1, vmin= 0)
+plt.imshow(max_opt_val[:,:,0], cmap="jet", vmax= 2, vmin= 0)
 plt.title("Freetime Pess Q")
 plt.colorbar()
 plt.show()

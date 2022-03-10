@@ -59,7 +59,7 @@ def play_freetime(env: EnvironmentBase, steps, Q, alpha, eps, discount, alpha2):
 
             # Print end of episode info 
             # Print end of episode info 
-            if epicount%100==0:
+            if epicount%1000==0:
                 print('Episode:', epicount, '| reward =',epirew,' steps =', episteps, ' freetime =',epifree)
 
             epirew = 0
