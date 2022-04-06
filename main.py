@@ -1,6 +1,16 @@
 
+import hydra
+from omegaconf import OmegaConf
 
-from scripts import baseline_exp
+@hydra.main(config_path='configs', config_name='config')
+def main(config): 
+    
+    print(OmegaConf.to_object(config))
+    
+    from lib.run import run
+    
+    run(config)
+    
 
-baseline_exp.main()
-#freetime_exp
+if __name__ == '__main__':
+    main()

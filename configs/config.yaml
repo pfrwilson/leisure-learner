@@ -1,0 +1,30 @@
+
+env: 
+  height: 20 
+  width: 10 
+  rewards: [[1, 0, 5]]
+  wind: True
+  start: random
+  allowed_actions: ['left', 'center', 'right']
+  reward_terminates_episode: False
+
+baseline: 
+  discount: 0.98
+  alpha: 0.01
+  num_steps: 300000
+  epsilon: 0.05
+
+freetime:
+  num_steps: 300000
+  epsilon: 0.05
+  discount: 0.98
+  alpha: 0.01
+  alpha_f: 0.03
+
+q_plots:
+  vmin: 0
+  vmax: 1
+
+f_plots: 
+  vmin: null
+  vmax: null
