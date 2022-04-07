@@ -6,12 +6,17 @@ from .gym_windy_gridworld import WindyGridworld
 from tqdm import tqdm
 
 def build_q_table(state_shape: Tuple[int], num_actions: Tuple[int], 
-                  initialization: Literal['random', 'pessimistic', 'optimistic'] = 'pessimistic'):
+                  initialization: Literal['random', 'pessimistic', 'optimistic'] = 'pessimistic', 
+                  seed=None):
     
     shape = (*state_shape, num_actions)
     
-    if initialization == 'random': 
-        return np.random.rand(*shape)
+    if initialization == 'random':
+        if seed is not None:
+            rng = np.random.RandomState(seed)
+            return rng.rand(*shape)
+        else: 
+            return np.random.rand(*shape)
 
     elif initialization == 'pessimistic': 
         return np.zeros(shape)
@@ -82,7 +87,7 @@ def Q_learn(env, Q, num_steps, epsilon, discount, alpha):
     return Q, np.cumsum(rewards)
     
     
-def Q_learn_freetime(env, Q, num_steps, epsilon, discount, alpha, alpha_f):
+def Q_learn_freetime(env, Q, num_steps, epsilon, discount, alpha, alpha_f, tolerance):
     
     F = np.ones_like(Q)
     
@@ -108,7 +113,7 @@ def Q_learn_freetime(env, Q, num_steps, epsilon, discount, alpha, alpha_f):
         else:
             new_Q = Q[new_state].max() * discount
             old_Q = Q[state].max()
-            freetime_reward = 1 if new_Q + 0.01 >= old_Q else 0
+            freetime_reward = 1 if new_Q + tolerance >= old_Q else 0
             freetime_target = freetime_reward + F[new_state].max() if freetime_reward == 1 else 0
         
         Q[state][action] = (1 - alpha) * Q[state][action] + alpha * q_target
