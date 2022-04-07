@@ -8,10 +8,37 @@ from gym.spaces import Tuple, Discrete
 import matplotlib.pyplot as plt
 import numpy as np
 
+ALL_ACTIONS = {
+    'U': 0, 
+    'D': 1,
+    'C': 2, 
+    'L': 4, 
+    'R': 5, 
+    'UL': 6, 
+    'UR': 7, 
+    'DL': 8, 
+    'DR': 9
+}
+
+def move(action_name, x, y):
+    
+    assert action_name in ALL_ACTIONS.keys()
+    
+    if 'U' in action_name:
+        x -= 1
+    if 'D' in action_name: 
+        x += 1
+    if 'L' in action_name: 
+        y -= 1
+    if 'R' in action_name:
+        y += 1
+    
+    return x, y
+
 class WindyGridworld(Env):
     
     def __init__(self, height=20, width=10, rewards=[(1, 0, 5)], wind=True, start='random',
-                 allowed_actions = ['left', 'center', 'right'], 
+                 allowed_actions = ['L', 'C', 'R'], 
                  reward_terminates_episode=False): 
         
         self.start = start
@@ -24,20 +51,12 @@ class WindyGridworld(Env):
         
         assert all(
             map(
-                lambda action: action in ['left', 'center', 'right', 'up', 'down'],
+                lambda action: action in ALL_ACTIONS.keys(),
                 allowed_actions
             )
         )
         self.actions = allowed_actions
         self.action_space = Discrete(len(allowed_actions))
-        
-        #self.actions = {
-        #    'left': 0, 
-        #    'center': 1, 
-        #    'right': 2, 
-        #    'up': 3, 
-        #    'down': 4,
-        #}
         
         self.observation_space = Tuple([
             Discrete(self.height), Discrete(self.width), 
@@ -51,39 +70,13 @@ class WindyGridworld(Env):
             raise ValueError('environment reset needed')
 
         else: return self.__pos
-        
-    def move(self, action, x, y):
-        
-        if action not in range(len(self.actions)): 
-            raise ValueError(f'action {action} not supported.')
-        
-        if self.actions[action] == 'up':
-            x -= 1
-            y = y
-        
-        if self.actions[action] == 'center':
-            x = x 
-            y = y
-        
-        if self.actions[action] == 'left':
-            y -= 1
-            x = x
-            
-        if self.actions[action] == 'right':
-            y += 1 
-            x = x
-            
-        if self.actions[action] == 'down':
-            x += 1 
-            y = y
-        
-        return x, y
      
     def step(self, action):
         
         x, y = self.pos
         
-        x, y = self.move(action, x, y)
+        assert action in range(self.action_space.n)
+        x, y = move(self.actions[action], x, y)
         
         if self.wind:
             x -= 1
@@ -101,11 +94,6 @@ class WindyGridworld(Env):
         self.__pos = (x, y) if not done else None 
         
         return self.__pos, reward, done, {}
-        
-    def get_wind(self, x, y):
-        # wind only goes in 1 direction for now
-        
-        return self.wind[y], 0 
     
     def check_terminal_state(self, x, y):
         if x < 0: return True
