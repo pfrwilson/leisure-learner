@@ -1,23 +1,4 @@
 
-<<<<<<< HEAD
-defaults:
-  - agent: vanilla
-
-training:
-  max_episodes: 20000
-
-environment:
-  name: gridworld
-  config:
-    height: 20
-    width: 10
-    rewards:    # amount, x, y
-      - [1, 0, 5]
-      - [1, 2, 3]
-    randstart: true
-
-report:
-=======
 initializations: 
   - random
   #- pessimistic
@@ -72,4 +53,3 @@ q_plots:
 f_plots: 
   vmin: null
   vmax: null
->>>>>>> gym_env
