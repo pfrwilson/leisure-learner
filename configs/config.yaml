@@ -1,26 +1,26 @@
 
 initializations: 
-  - random
-  #- pessimistic
+  #- random
+  - pessimistic
   #- optimistic
 
 random_initialization_seed: null
 
-num_runs: 25
+num_runs: 5
 
 env: 
   height: 20
-  width: 10
-  rewards: [[1, 0, 0], [10, 0, 10]]
+  width: 11
+  rewards: [[1, 1, 6], [1, 3, 4]]
   wind: yes
   start: random
-  allowed_actions: ['L', 'C', 'R',] #'U', 'D'] # 'UL', 'UR', 'DL', 'DR']
-  reward_terminates_episode: True
+  allowed_actions: ['L', 'R', 'C'] # U', 'D', 'UL', 'UR', 'DL', 'DR']
+  reward_terminates_episode: no
 
 baseline: 
   discount: 0.98
   alpha: 0.01
-  num_steps: 100000
+  num_steps: 10000
   epsilon: 0.05
 
   show_rewards: yes
@@ -28,18 +28,18 @@ baseline:
   show_trajectory: yes
 
 freetime:
-  num_steps: 100000
+  num_steps: 10000
   epsilon: 0.05
   discount: 0.98
   alpha: 0.01
   alpha_f: 0.01
-  tolerance: 0.001
+  tolerance: 0.0
 
   show_rewards: yes
   show_q: no
-  show_f: no
+  show_f: yes
   show_f_actions:
-    - max 
+    - min 
     #- 0
   show_trajectory: yes
 
@@ -53,3 +53,5 @@ q_plots:
 f_plots: 
   vmin: null
   vmax: null
+
+plot_freetime_vs_baseline_same_table: True

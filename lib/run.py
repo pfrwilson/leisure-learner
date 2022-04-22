@@ -16,6 +16,8 @@ def plot_F(F, title, vmin, vmax, action='max'):
     plt.figure()
     if action == 'max':
         plt.imshow(F.max(axis=-1), vmin=vmin, vmax=vmax)
+    if action == 'min':
+        plt.imshow(F.min(axis=-1), vmin=vmin, vmax=vmax)
     else:
         plt.imshow(F[..., action], vmin=vmin, vmax=vmax)
     plt.title(title)
@@ -54,7 +56,7 @@ def run(config):
     
     print('Running baseline...')
     
-    results = {
+    results_baseline = {
         initialization: [] for initialization in INITIALIZATIONS
     }
     
@@ -79,7 +81,7 @@ def run(config):
                 config.baseline.alpha
             )
             
-            results[initialization].append(rewards)
+            results_baseline[initialization].append(rewards)
             Q_tables[initialization] = Q
             
     if config.baseline.show_trajectory:
@@ -89,7 +91,7 @@ def run(config):
     
     if config.baseline.show_rewards:
         plt.figure()
-        for title, rewards in results.items():
+        for title, rewards in results_baseline.items():
             plot_errorbars(rewards, label=title)
             plt.legend()
             plt.title('baseline results')
@@ -100,7 +102,7 @@ def run(config):
  
     print('Running freetime')
     
-    results = {
+    results_freetime = {
         initialization: [] for initialization in INITIALIZATIONS
     }
     Q_tables = {}
@@ -127,7 +129,7 @@ def run(config):
                 config.freetime.tolerance
             )
             
-            results[initialization].append(rewards)
+            results_freetime[initialization].append(rewards)
             Q_tables[initialization] = Q
             F_tables[initialization] = F
         
@@ -138,10 +140,10 @@ def run(config):
     
     if config.freetime.show_rewards: 
         plt.figure()
-        for title, rewards in results.items():
+        for title, rewards in results_freetime.items():
             plot_errorbars(rewards, label=title)
             plt.legend()
-            plt.title('freetime results')
+            plt.title('freetime results_freetime')
         
     if config.freetime.show_q:
         for title, Q in Q_tables.items():
@@ -153,5 +155,13 @@ def run(config):
                 plot_F(F, f'{title} init f-table freetime action {action}', config.f_plots.vmin, config.f_plots.vmax, 
                        action)
         
+    if config.plot_freetime_vs_baseline_same_table:
+        for initialization in INITIALIZATIONS:
+            plt.figure()
+            plot_errorbars(results_baseline[initialization], label='baseline')
+            plot_errorbars(results_freetime[initialization], label='freetime')
+            plt.title(f'{initialization} initialization')
+            plt.legend()
+            
     plt.show()
     

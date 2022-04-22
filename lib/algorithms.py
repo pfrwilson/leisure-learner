@@ -113,7 +113,7 @@ def Q_learn_freetime(env, Q, num_steps, epsilon, discount, alpha, alpha_f, toler
         else:
             new_Q = Q[new_state].max() * discount
             old_Q = Q[state].max()
-            freetime_reward = 1 if new_Q + tolerance >= old_Q else 0
+            freetime_reward = 1 if reward + new_Q + tolerance >= old_Q else 0
             freetime_target = freetime_reward + F[new_state].max() if freetime_reward == 1 else 0
         
         Q[state][action] = (1 - alpha) * Q[state][action] + alpha * q_target
